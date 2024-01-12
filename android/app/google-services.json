@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "959497703373",
+    "project_id": "plantium-b26aa",
+    "storage_bucket": "plantium-b26aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:959497703373:android:010af97f6ec534d326be84",
+        "android_client_info": {
+          "package_name": "com.example.plantium"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe-fpuNrOy6NBrBtaheLxGAFdUwmhSjPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
