@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-callNext( var context,var className,) {
+callNext(var context,var className,) {
   Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => className),

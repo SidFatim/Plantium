@@ -6,16 +6,6 @@ import 'package:provider/provider.dart';
 
 class UsersList extends StatelessWidget {
    UsersList({super.key});
-  List<String> names = [
-    "Sammy Alexander",
-    "Lucy Feraz",
-
-  ];
-  List<String> numbers = [
-    "8593560876",
-    "9261720453",
-
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +34,10 @@ class UsersList extends StatelessWidget {
                 color: whitegreen),),
           backgroundColor: darkgreen,),
         body:
-            // SizedBox(height: 15,),
             Consumer<MainProvider>(
               builder: (context,value,child) {
                 return ListView.builder(
-                    itemCount:value.userlist.length ,
+                    itemCount:value.adminuserList.length ,
                   itemBuilder: (context,index) {
 
                     return Container(
@@ -66,7 +55,7 @@ class UsersList extends StatelessWidget {
                             Text("Name:",
                               style: TextStyle(
                                   fontSize: 22),),
-                            Text(value.userlist[index].Usname,
+                            Text(value.adminuserList[index].Usname,
                               style: TextStyle(
                                   fontSize: 22),),
                           ],
@@ -77,7 +66,7 @@ class UsersList extends StatelessWidget {
                             Text("Phone:",
                               style: TextStyle(
                                   fontSize: 22),),
-                            Text(value.userlist[index].Usphone,
+                            Text(value.adminuserList[index].Usphone,
                               style: TextStyle(
                                   fontSize: 22),),
                           ],

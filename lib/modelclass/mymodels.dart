@@ -38,7 +38,8 @@ class PlantsModel{
   String Plname;
   String Plprice;
   String Pldesc;
-  PlantsModel(this.Plid,this.Plimage,this.Plname,this.Plprice,this.Pldesc);
+  String catid;
+  PlantsModel(this.Plid,this.Plimage,this.Plname,this.Plprice,this.Pldesc,this.catid);
 }
 
 class CartModel{
@@ -47,5 +48,25 @@ class CartModel{
   String Crtprice;
   String Crtimg;
   CartModel(this.Crtid,this.Crtname,this.Crtprice,this.Crtimg);
+}
+
+class UserAdminModel{
+  String Usid;
+  String Usname;
+  String Usphone;
+  UserAdminModel(this.Usid,this.Usname,this.Usphone);
+}
+
+class OrderModel{
+  String orderid;
+  String itemname;
+  String itemstate;
+  String itemquantity;
+  String itemaddress;
+  String itemimage;
+  String plantname;
+  String userid;
+  String status;
+  OrderModel(this.orderid,this.itemname,this.itemstate,this.itemquantity,this.itemaddress,this.itemimage,this.plantname,this.userid,this.status);
 }
 

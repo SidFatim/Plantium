@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:plantium/constant/mycolos.dart';
+import 'package:plantium/provider/mainprovider.dart';
 import 'package:plantium/user/cartpage.dart';
 import 'package:plantium/user/homescreen.dart';
 import 'package:plantium/user/profile.dart';
 import 'package:plantium/user/saved.dart';
+import 'package:provider/provider.dart';
 
 class Bottom extends StatefulWidget {
-  const Bottom({super.key});
+  String userid;
+  Bottom({super.key,required this.userid});
 
   @override
   State<Bottom> createState() => _BottomState();
@@ -16,22 +19,27 @@ class Bottom extends StatefulWidget {
 class _BottomState extends State<Bottom> {
   int selectedIndex = 0;
 
-  var pages = [
-    HomeScreen(),
-    CartPage(),
-    Saved(),
-    Profile(),
-  ];
+
 
   @override
   void _itemTapped(int index){
     setState(() {
       selectedIndex = index;
+
       print(selectedIndex.toString()+"ppkk");
     });
 
   }
   Widget build(BuildContext context) {
+    MainProvider provider=Provider.of<MainProvider>(context,listen: false);
+    //provider.getUser(widget.userid);
+
+    var pages = [
+      HomeScreen(userid:widget.userid ),
+      CartPage(),
+      Saved(),
+      Profile(userid: widget.userid),
+    ];
     print(selectedIndex.toString()+"ijkjkj");
     return Scaffold(
       body: pages[selectedIndex],
@@ -47,10 +55,10 @@ class _BottomState extends State<Bottom> {
 
         onTap: _itemTapped,
         items: [
-          BottomNavigationBarItem(label: "",
+          BottomNavigationBarItem(
+            label: "",
+            icon: Icon(Icons.home,size: 33,),),
 
-            icon: Icon(Icons.home,size: 33,),
-          ),
           BottomNavigationBarItem(label: "",
             icon: Icon(Icons.shopping_cart,size: 33,),
 
@@ -59,9 +67,7 @@ class _BottomState extends State<Bottom> {
             icon: Icon(Icons.favorite_border,size:33),),
 
           BottomNavigationBarItem(label: "",
-            icon: Icon(Icons.person,size: 33,),
-
-          ),
+            icon: Icon(Icons.person,size: 33,),),
         ],
 
       ),

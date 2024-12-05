@@ -59,9 +59,7 @@ class OtpScreen extends StatelessWidget {
                       //   });
                       // }
                       value.verify(context);
-
-                    },
-
+                      },
                   ),
                 );
               }
@@ -75,7 +73,6 @@ class OtpScreen extends StatelessWidget {
                     child: mybtn(height/15, width/3, "Verify"));
               }
             ),
-
           ],
         ),
       ),

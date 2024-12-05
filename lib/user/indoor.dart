@@ -9,24 +9,6 @@ import 'description.dart';
 
 class Indoor extends StatelessWidget {
    Indoor({super.key});
-  List<String> images = [
-    "assets/img.png",
-    "assets/img_4.png",
-    "assets/img_1.png",
-    "assets/img_2.png",
-    "assets/img_6.png",
-    "assets/img_7.png",
-
-  ];
-  List<String> names = [
-    "Fiddle leaf",
-    "Ficus",
-    "Maple",
-    "Monstera",
-    "Zanzibar gem",
-    "Ivy",
-
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -56,65 +38,58 @@ class Indoor extends StatelessWidget {
             fontWeight: FontWeight.bold,
             fontSize: 25),)),),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 800,
-              child: Consumer<MainProvider>(
-                builder: (context,value,child) {
-                  return GridView.builder(shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: value.IndoorList.length,
-                      gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.8,
-                        crossAxisSpacing: 10,
-                       mainAxisSpacing: 10,
-                      ),
-                      itemBuilder: (context, index) {
-                        return InkWell(onTap: (){
-                          // callNext(context, Description(
-                          //   plantName: value.IndoorList[index].Inname,
-                          //   price: value.IndoorList[index].Inprice,
-                          //   description: value.IndoorList[index].Indesc,
-                          //   image: value.IndoorList[index].Inimage, catid: value.cartList[index].Crtid,
-                          //   itemId: value.cartList[index].,
-                          //   userId: ,
-                          // ));
-                        },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5,vertical:5 ),
-                            height: 300,
-                            width: 200,
-                            color: Colors.grey,
-                          child:
-                          Column(
-                            children: [
-                              Container(
-                                height: 200,width: width,
-                                child: Image.network(
-                                    value.IndoorList[index].Inimage,
-                                    fit: BoxFit.fill),),
-                              Center(child: Text(
-                                value.IndoorList[index].Inname,
-                                style: TextStyle(
-                                    color: darkgreen,
-                                    fontSize: 20),))
-                            ],
-                          ),
-                          ),
-                        );
-                      },
-
-                    );
-                }
-              ),
-            ),
-          ],
-
-        ),
+        child: Consumer<MainProvider>(
+          builder: (context,value,child) {
+            return GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: value.IndoorList.length,
+                gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.8,
+                  crossAxisSpacing: 10,
+                 mainAxisSpacing: 10,
+                ),
+                itemBuilder: (context, index) {
+                  return InkWell(onTap: (){
+                    callNext(context, Description(
+                      // catid: value.IndoorList[index].Inid,
+                      plantName: value.IndoorList[index].Inname,
+                      price: value.IndoorList[index].Inprice,
+                      description: value.IndoorList[index].Indesc,
+                      image: value.IndoorList[index].Inimage,
+                      Plid: value.plantsList[index].Plid,
+                      userid: value.plantsList[index].catid,
+                    ));
+                  },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5,vertical:5 ),
+                      height: 280,
+                      width: 200,
+                      color: Colors.grey,
+                    child:
+                    Column(
+                      children: [
+                        Container(
+                          height: 180,width: width,
+                          child: Image.network(
+                              value.IndoorList[index].Inimage,
+                              fit: BoxFit.fill),),
+                        Center(child: Text(
+                          value.IndoorList[index].Inname,
+                          style: TextStyle(
+                              color: darkgreen,
+                              fontSize: 20),))
+                      ],
+                    ),
+                  )
+                  );
+              }
+              );
+            },
+          )
       ),
-      ),
+   )
     );
   }
 }

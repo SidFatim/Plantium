@@ -11,10 +11,13 @@ import 'editprofile.dart';
 import 'myorders.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({super.key});
+  String userid;
+   Profile({super.key,required this.userid});
 
   @override
   Widget build(BuildContext context) {
+    MainProvider provider=Provider.of(context,listen: false);
+    provider.getUser(userid);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Container(
@@ -27,7 +30,7 @@ class Profile extends StatelessWidget {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: Center(
-              child: Text('My profile',
+              child: Text('Profile',
             style: TextStyle(
                 color: whitegreen,
                 fontSize: 25,
@@ -43,19 +46,27 @@ class Profile extends StatelessWidget {
                   size: 130,),
                 backgroundColor: darkgreen,
                 radius: 80,),),
-            Text('Sammy Alexander'
-              ,style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey),),
-            Text('+91 8542936501',style: TextStyle(
-                color: whitegreen),),
+            Consumer<MainProvider>(
+              builder: (context,value,child) {
+                return Text(value.name.toString(),
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),);
+              }
+            ),
+            Consumer<MainProvider>(
+              builder: (context,value,child) {
+                return Text(value.phone.toString(),style: TextStyle(
+                    color: whitegreen),);
+              }
+            ),
             SizedBox(height: 25,),
             Consumer<MainProvider>(
               builder: (context,value,child) {
                 return InkWell(onTap: (){
-                  // value.getEditUser();
-                  callNext(context, EditProfile());
+                  //value.getEditUser(userid);
+                  callNext(context, EditProfile(userid: userid,));
                 },
                   child: Container(
                     height: 50,width: 320,
@@ -78,24 +89,30 @@ class Profile extends StatelessWidget {
               }
             ),
             SizedBox(height: 15,),
-            InkWell(onTap: (){
-              callNext(context, MyOrders());
-            },
-              child: Container(
-                height: 50,width: 320,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: lightgreen),
-                    color: darkgreen),
-                child: Row(
-                  children: [
-                    SizedBox(width: 50,),
-                    Text('My orders',style: TextStyle(
-                        fontSize: 25,color: whitegreen),),
-                    SizedBox(width: 75,),
-                    Icon(Icons.shopping_bag,color: whitegreen,size: 30)
-                  ],
-                ),),
+            Consumer<MainProvider>(
+              builder: (context,value,child) {
+                return InkWell(onTap: (){
+                  print(userid+"kmmmmmmmmmmmmmmm");
+                  value.getUserOrder(userid);
+                  callNext(context, MyOrders());
+                },
+                  child: Container(
+                    height: 50,width: 320,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: lightgreen),
+                        color: darkgreen),
+                    child: Row(
+                      children: [
+                        SizedBox(width: 50,),
+                        Text('My orders',style: TextStyle(
+                            fontSize: 25,color: whitegreen),),
+                        SizedBox(width: 75,),
+                        Icon(Icons.shopping_bag,color: whitegreen,size: 30)
+                      ],
+                    ),),
+                );
+              }
             ),
             SizedBox(height: 15,),
             InkWell(
@@ -134,8 +151,7 @@ class Profile extends StatelessWidget {
                     ),
                     actions: <Widget>[
                       Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             // height: height/5,
@@ -172,8 +188,8 @@ class Profile extends StatelessWidget {
                                   )),
                               TextButton(
                                   onPressed: () {
-
-                                  },
+                                    back(context);
+                                    },
                                   child: Text(
                                     "No",
                                     style: TextStyle(
@@ -181,7 +197,7 @@ class Profile extends StatelessWidget {
                                       fontFamily: 'PoetsenOne',
                                       color: Color(0xff35103B),
                                     ),
-                                  ))
+                                  )),
                             ],
                           )
                         ],
@@ -205,11 +221,9 @@ class Profile extends StatelessWidget {
                     Icon(Icons.logout,
                         color: whitegreen,
                         size: 30),
-
                   ],
                 ),),
             ),
-
           ],
         ),
       ),

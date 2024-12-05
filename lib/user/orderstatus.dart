@@ -3,7 +3,11 @@ import 'package:plantium/constant/mycolos.dart';
 import 'package:plantium/constant/myfunction.dart';
 
 class OrderStatus extends StatelessWidget {
-  const OrderStatus({super.key});
+  String orderid;
+  String image;
+  String name;
+  String quantity;
+   OrderStatus({super.key,required this.orderid,required this.image,required this.name,required this.quantity});
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +38,16 @@ class OrderStatus extends StatelessWidget {
               color: Colors.grey,
             child: Row(
               children: [
-                Image.asset("assets/ot3.jpg",),
+                Image.network(image,),
                 Padding(
                   padding: const EdgeInsets.only(top: 30,left: 20),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Coral bells',
+                      Text(name,
                         style: TextStyle(
                             fontSize: 28,
                             color: darkgreen),),
-                      Text('2',style: TextStyle(
+                      Text(quantity,style: TextStyle(
                           fontSize: 22),)
                     ],
                   ),
@@ -91,7 +95,6 @@ class OrderStatus extends StatelessWidget {
                       ],
                     ),
                   ),
-
                   Row(
                     children: [
                       Icon(Icons.task_alt,
@@ -131,7 +134,7 @@ class OrderStatus extends StatelessWidget {
                       SizedBox(width: 10,),
                       Column(crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Order will be delivered on',
+                          Text('Order delivered',
                             style: TextStyle(
                               fontSize: 20,
                               color: whitegreen),),
@@ -145,7 +148,7 @@ class OrderStatus extends StatelessWidget {
                 ],
               ),
             ),
-                ),
+            ),
           ],
         ),
       ),

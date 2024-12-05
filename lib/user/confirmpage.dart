@@ -35,7 +35,6 @@ class ConfirmPage extends StatelessWidget {
                     fontSize: 30,
                     color: whitegreen),),
             ],
-
           ),
         )
     );

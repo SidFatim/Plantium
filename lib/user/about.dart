@@ -17,7 +17,8 @@ class About extends StatelessWidget {
           onTap: (){
             back(context);
           },
-            child: Icon(Icons.arrow_back,color: whitegreen,)),
+            child: Icon(
+              Icons.arrow_back,color: whitegreen,)),
         backgroundColor: Color(0xff147846),
       ),
       body: Column(

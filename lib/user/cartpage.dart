@@ -9,26 +9,6 @@ import 'orderdetail.dart';
 
 class CartPage extends StatelessWidget {
   CartPage({super.key});
-  List<String> images = [
-    "assets/ot1.jpg",
-    "assets/ot2.jpg",
-    "assets/ot3.jpg",
-    "assets/img_6.png",
-
-  ];
-  List<String> names = [
-  "Caladium",
-  "Agave",
-  "Coral bells",
-  "Zanzibar gem",
-  ];
-  List<String> prices = [
-    "Rs.650",
-    "Rs.750",
-    "Rs.900",
-    "Rs.999",
-  ];
-
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -38,30 +18,29 @@ class CartPage extends StatelessWidget {
       decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage('assets/img_8.png'),
-              fit: BoxFit.fill)),
+              fit: BoxFit.cover)),
       child: Scaffold(
         backgroundColor: Colors.transparent,
       appBar: AppBar(
-        leading: InkWell(
-            onTap: (){
-        back(context);
-      },
-          child: Icon(
-            Icons.chevron_left,
-            color: whitegreen,)),
+        title: Center(
+            child: Text('Cart',
+              style: TextStyle(
+                  color: whitegreen,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold),)),
         backgroundColor: darkgreen,),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            SizedBox(
-              height: 800,
-              child: ListView.builder(
-                itemCount: images.length,
+      body: Consumer<MainProvider>(
+            builder: (context,value,child) {
+              print("cfhcgghh"+value.cartList.length.toString());
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: value.cartList.length,
                 itemBuilder: (context, index) {
-                return  Container(
+                  var item= value.cartList[index];
+                  return  Container(
                   margin: EdgeInsets.symmetric(
-                      horizontal: 10,vertical: 10),
+                      horizontal: 10,
+                      vertical: 10),
                   height: 120,width: 350,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -71,34 +50,40 @@ class CartPage extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         left: 10,bottom: 10,top: 10),
                     child: Container(
-                      height: 60,width: 80,
+                      height: 55,width: 60,
                       child: Row(
                         children: [
-                          Image.asset(images[index],
-                            fit: BoxFit.fill,),
+                          Image.network(item.Crtimg,
+                            fit: BoxFit.cover,),
                           Column(
                             children: [
-                              Text(names[index],
+                              Text(item.Crtname,
                                 style: TextStyle(
                                   fontSize: 25,
                                   color: darkgreen),),
                               SizedBox(width: 30,),
-                              Text(prices[index],
-                                style: TextStyle(
-                                  fontSize: 20),),
+                              Row(
+                                children: [
+                                  Text("Rs.",style: TextStyle(fontSize: 20),),
+                                  Text(item.Crtprice,
+                                    style: TextStyle(
+                                        fontSize: 20,),),
+                                ],
+                              ),
                               Row(
                                 children: [
                                   SizedBox(width: 15),
                                   InkWell(
                                       onTap: (){
-                                    callNext(context, OrderDetails());
+                                    callNext(context, OrderDetails(image: item.Crtimg,name: item.Crtname,price: item.Crtprice,));
                                   },
                                       child: brbtn(height/30,width/4,"Buy now")),
                                   SizedBox(width: 15,),
                                   Consumer<MainProvider>(
                                     builder: (context,value,child) {
                                       return InkWell(onTap: (){
-                                        // value.deletecartItem();
+                                        value.deletecartItem(context, value.cartList[index].Crtid);
+                                        // finish(context);
                                         },
                                           child: brbtn(height/30,width/4,"Remove"));
                                     }
@@ -110,12 +95,10 @@ class CartPage extends StatelessWidget {
                         ],
                       ),),
                   ),);
-              },
-              ),
-            ),
-          ],
-        ),
-      ),
+                  },
+              );
+            }
+          ),
       ),
     );
   }

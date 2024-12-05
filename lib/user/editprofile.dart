@@ -7,7 +7,8 @@ import 'package:plantium/provider/mainprovider.dart';
 import 'package:provider/provider.dart';
 
 class EditProfile extends StatelessWidget {
-  const EditProfile({super.key});
+  String userid;
+   EditProfile({super.key,required this.userid});
 
   @override
   Widget build(BuildContext context) {
@@ -69,19 +70,32 @@ class EditProfile extends StatelessWidget {
                       style: TextStyle(
                           color: whitegreen,
                           fontSize: 20),)),
-                Container(
-                  height: 30,width: 280,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      color: Colors.grey),
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [LengthLimitingTextInputFormatter(10)],
-                  ),),
+                Consumer<MainProvider>(
+                  builder: (context,value,child) {
+                    return Container(
+                      height: 30,width: 280,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          color: Colors.grey),
+                      child: TextFormField(enabled: false,
+                        controller: value.registerphoneController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                      ),);
+                  }
+                ),
               ],
             ),
             SizedBox(height: 30,),
-            mybtn(height/15, width/3, "Update"),
+            Consumer<MainProvider>(
+              builder: (context,value,child) {
+                return GestureDetector(onTap: (){
+                  value.AddCustomer(userid, "EDIT");
+                  back(context);
+                },
+                    child: mybtn(height/15, width/3, "Update"));
+              }
+            ),
           ],
         ),
       ),

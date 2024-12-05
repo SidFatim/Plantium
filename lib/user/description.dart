@@ -10,18 +10,15 @@ import 'package:provider/provider.dart';
 import 'cartpage.dart';
 
 class Description extends StatelessWidget {
+
   String plantName;
   String price;
   String description;
   String image;
-  String catid;
-  String itemId;
-  String userId;
-  String itemName;
-  String itemPrice;
-  String itemImage;
+  String Plid;
+  String userid;
   Description({super.key,required this.plantName,required this.price,required this.description,required this.image,
-    required this.catid,required this.itemId,required this.userId,required this.itemName,required this.itemPrice,required this.itemImage
+  required this.Plid,required this.userid
   });
 
   @override
@@ -90,23 +87,20 @@ class Description extends StatelessWidget {
                         color: Colors.grey),),
                 ],
               ),
-
               SizedBox(height: 20,),
               Consumer<MainProvider>(
                 builder: (context,value,child) {
                   return InkWell(
                       onTap: (){
-                        value.addToCart(catid, context, itemId, userId, itemName, itemPrice, itemImage);
-                    callNext(context, CartPage());
+                        value.addToCart(context,Plid,userid,plantName,price,image);
+                    // callNext(context, CartPage());
                   },
                       child: mybtn(height/15, width/3, "Add to cart"));
                 }
               ),
             ],
-
           ),
         ),
-
       ),
     );
   }

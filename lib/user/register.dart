@@ -46,7 +46,6 @@ class RegesiterPage extends StatelessWidget {
                       ),);
                   }
                 ),
-
               ],
             ),
             SizedBox(height: 80,),
@@ -72,13 +71,12 @@ class RegesiterPage extends StatelessWidget {
                 ),
               ],
             ),
-
             SizedBox(height: 50,),
             Consumer<MainProvider>(
               builder: (context,value,child) {
                 return InkWell(
                   onTap: (){
-                    value.AddCustomer();
+                    value.AddCustomer("","NEW");
                     callNext(context, LoginPage());
                     },
                     child: mybtn(height/15, width/3, "Sign up"));
@@ -92,11 +90,8 @@ class RegesiterPage extends StatelessWidget {
                     color: whitegreen,
                     decoration: TextDecoration.underline,
                     decorationColor: Colors.white),))
-
           ],
         ),
-
-
       ),
     );
   }

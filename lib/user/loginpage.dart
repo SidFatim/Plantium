@@ -81,15 +81,9 @@ class LoginPage extends StatelessWidget {
                       color: whitegreen,
                       decoration: TextDecoration.underline,
                       decorationColor: Colors.white),))
-
             ],
           ),
         ),
-
-
-
-
-
         ),
       ),
     );

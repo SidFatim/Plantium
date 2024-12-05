@@ -28,13 +28,12 @@ class Saved  extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          leading: InkWell(
-              onTap: (){
-          back(context);
-        },
-            child: Icon(
-              Icons.chevron_left,
-              color: whitegreen,)),
+          title: Center(
+              child: Text('Wishlist',
+                style: TextStyle(
+                    color: whitegreen,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold),)),
           backgroundColor: darkgreen,),
         body: SingleChildScrollView(
           child: Column(
@@ -54,7 +53,6 @@ class Saved  extends StatelessWidget {
                       margin: EdgeInsets.symmetric(horizontal: 5,vertical:5 ),
                       height: height/3,
                       width: width/4,
-
                       color: Colors.grey,
                       child:
                       Column(
@@ -77,14 +75,11 @@ class Saved  extends StatelessWidget {
                           )
                         ],
                       ),
-
                     );
                   },
-
                 ),
               )
             ],
-
           ),
         ),
       ),

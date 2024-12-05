@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:plantium/constant/myfunction.dart';
+import 'package:provider/provider.dart';
 
 import '../constant/mycolos.dart';
+import '../provider/mainprovider.dart';
 
 class TakingStatus extends StatelessWidget {
-  const TakingStatus({super.key});
+  String orderid;
+  TakingStatus({super.key,required this.orderid});
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    bool checkboxValue=false;
+
     return Container(
       height: height,width: width,
       decoration: BoxDecoration(
@@ -36,67 +39,78 @@ class TakingStatus extends StatelessWidget {
         body: Column(
           children: [
             SizedBox(height: 20,),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Order confirmed",
-                  style: TextStyle(
-                    fontSize: 30,
-                      color: whitegreen),),
-                Checkbox(
-                  activeColor: Colors.black,
-                  checkColor: Colors.white,
-                  value: checkboxValue,
-                  side:BorderSide(
-                      color: whitegreen,
-                      width: 2),
-                  onChanged: (bool? value) {
-
-                  },
-                ),
-              ],
+        Row(
+          children: [
+            Text("Order confirmed",style: TextStyle(color: whitegreen,fontSize: 25)),
+            SizedBox(width: 150), //SizedBox
+            Consumer<MainProvider>(
+                builder: (context,val,child) {
+                  return Radio(
+                      activeColor:  whitegreen,
+                      value: "Order confirmed",
+                      groupValue:val.ordervaluew,
+                      onChanged: (value){
+                        val.ordervaluew = value.toString();
+                        val.notifyListeners();
+                      }
+                  );
+                }
             ),
-            SizedBox(height: 30,),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Order packed",
-                  style: TextStyle(
-                    fontSize: 30,
-                      color: whitegreen),),
-                Checkbox(
-                  activeColor: Colors.black,
-                  checkColor: Colors.white,
-                  value: checkboxValue,
-                  side:BorderSide(
-                      color: whitegreen,
-                      width: 2),
-                  onChanged: (bool? value) {
-
-                  },
-                ),
-              ],
+          ],
+        ),
+        Row(
+          children: [
+            Text("Order packed",style: TextStyle(color: whitegreen,fontSize: 25)),
+            SizedBox(width: 185), //SizedBox
+            Consumer<MainProvider>(
+                builder: (context,val,child) {
+                  return Radio(
+                      activeColor:  whitegreen,
+                      value: "Order packed",
+                      groupValue:val.ordervaluew,
+                      onChanged: (value){
+                        val.ordervaluew= value.toString();
+                        val.notifyListeners();
+                      }
+                  );
+                }
             ),
-            SizedBox(height: 30,),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Order delivered",
-                  style: TextStyle(
-                    fontSize: 30,
-                      color: whitegreen),),
-                Checkbox(
-                  activeColor: Colors.black,
-                  checkColor: Colors.white,
-                  value: checkboxValue,
-                  side:BorderSide(
-                      color: whitegreen,
-                      width: 2),
-                  onChanged: (bool? value) {
+          ],
+        ),
 
-                  },
-                ),
-              ],
+        Row(
+          children: [
+            Text("Order delivered",style: TextStyle(color: whitegreen,fontSize: 25)),
+            SizedBox(width: 165), //SizedBox
+            Consumer<MainProvider>(
+                builder: (context,val,child) {
+                  return Radio(
+                      activeColor:  whitegreen,
+                      value: "Order delivered",
+                      groupValue:val.ordervaluew,
+                      onChanged: (value){
+                        val.ordervaluew = value.toString();
+                        val.notifyListeners();
+                      }
+                  );
+                }
             ),
-
-
+          ],
+        ),
+            Consumer<MainProvider>(
+                builder: (context,val,child) {
+                  return InkWell(onTap: () {
+                    val.updateorder(orderid, context);
+                  },
+                    child: Container(
+                      height: 70,
+                      width: 150,
+                      decoration: BoxDecoration( color: Color(0xff85723A) ,borderRadius: BorderRadius.circular(20)),
+                      child: Center(child: Text("Update",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w700))),
+                    ),
+                  );
+                }
+            ),
           ],
         ),
       ),

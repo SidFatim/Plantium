@@ -28,9 +28,7 @@ Timer( Duration(seconds: 4), () {
   }else{
     provider.userAuthorized(currentUser.phoneNumber, context);
   }
-
-
-    });
+  });
     super.initState();
   }
 

@@ -10,33 +10,10 @@ import 'package:plantium/user/outdoor.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-   HomeScreen({super.key});
-  List<String> images = [
-    "assets/ot1.jpg",
-    "assets/ot3.jpg",
-    "assets/img_4.png",
-    "assets/out4.jpg",
-    "assets/out3.jpg",
-    "assets/img_7.png",
+  String userid;
 
-  ];
-  List<String> names =[
-    "Caladium",
-    "Coral bells",
-    "Ficus",
-    "Green prince",
-    "Paddle",
-    "Ivy",
-  ];
-List<String> prices = [
-  "Rs.650",
-  "Rs.750",
-  "Rs.900",
-  "Rs.550",
-  "Rs.1000",
-  "Rs.1500",
+   HomeScreen({super.key,required this.userid});
 
-];
    @override
   Widget build(BuildContext context) {
      var width = MediaQuery.of(context).size.width;
@@ -62,7 +39,7 @@ List<String> prices = [
                         color: whitegreen),),
                 ],
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
               Center(
                 child: Container(
                   height: 40, width: 350,
@@ -88,7 +65,7 @@ List<String> prices = [
                   ),),
               ),
               SizedBox(height: 20,),
-              Image.asset('assets/Group234.png'),
+              Image.asset('assets/plt.png'),
               SizedBox(height: 20,),
               Row(
                 children: [
@@ -155,8 +132,7 @@ List<String> prices = [
               ),
               SizedBox(height: 20,),
               Container(
-                height: 330,
-
+                height: 300,
                 child: Consumer<MainProvider>(
                   builder: (context,value,child) {
                     return Expanded(flex: 3,
@@ -168,8 +144,14 @@ List<String> prices = [
                           builder: (context,val,child) {
                             return InkWell(
                               onTap: (){
-                                callNext(Description(plantName: item.Plname, price: item.Plprice, description: item.Pldesc, image: item.Plimage, catid: , itemId: itemId, userId: userId, itemName: itemName, itemPrice: itemPrice, itemImage: itemImage)
-                                );
+                                callNext(context, Description(
+                                  // catid: item.catid,
+                                  plantName: item.Plname,
+                                  price: item.Plprice,
+                                  description: item.Pldesc,
+                                  image: item.Plimage,
+                                  Plid: item.Plid,
+                                  userid: userid,));
                               },
                               child: Container(
                                 margin: EdgeInsets.all(10),
@@ -178,27 +160,34 @@ List<String> prices = [
                                   children: [
                                     SizedBox(height: 10,),
                                     Container(
-                                        height: 200,width: 170,
+                                        height: 180,width: 170,
                                         child: Image.network(val.plantsList[index].Plimage,
                                           fit: BoxFit.fill,
                                           scale: 1,)),
                                     Text(val.plantsList[index].Plname,
                                       style: TextStyle(
-                                        fontSize: 28,
+                                        fontSize: 28
+                                          ,
                                         color: darkgreen),),
-                                    Text(val.plantsList[index].Plprice,
-                                      style: TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold),),
+                                    Row(mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text("Rs.",style: TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.w900,
+                                            color: Colors.black54),),
+                                        Text(val.plantsList[index].Plprice,
+                                          style: TextStyle(
+                                              fontSize: 25,color: Colors.black54,
+                                              fontWeight: FontWeight.w900),),
+                                      ],
+                                    ),
                                   ],
                                 ),
-
                               ),
                             );
                           }
                         );
-
-                      },),
+                        },),
                     );
                   }
                 ),

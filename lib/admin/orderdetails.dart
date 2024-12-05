@@ -6,7 +6,14 @@ import '../constant/mywidgets.dart';
 import 'orderstatus.dart';
 
 class TakingOrders extends StatelessWidget {
-  const TakingOrders({super.key});
+  String address;
+  String name;
+  String state;
+  String image;
+  String plantname;
+  String quantity;
+  String orderid;
+  TakingOrders({super.key,required this.address,required this.image,required this.plantname,required this.quantity,required this.name,required this.state,required this.orderid});
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +52,16 @@ class TakingOrders extends StatelessWidget {
               child: Container(
                 height: 150,width: 380,
                 color: Colors.grey,
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Sammy Alexander"),
-                  Text("North hills,Southampton"),
-                  Text("679340"),
-                  Text("Kerala"),
-                  Text("Malappuram"),
-                ],
-              ),),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(name,style: TextStyle(fontWeight: FontWeight.bold),),
+                      Text(address),
+                      Text(state),
+                    ],
+                  ),
+                ),),
             ),
             SizedBox(height: 20,),
             Text("Orders:",
@@ -65,25 +73,25 @@ class TakingOrders extends StatelessWidget {
               color: Colors.grey,
               child: Row(
                 children: [
-                  Image.asset("assets/ot3.jpg",),
+                  Image.network(image),
                   Padding(
                     padding: const EdgeInsets.only(top: 30,left: 20),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Text('Coral bells',
+                            Text(plantname,
                               style: TextStyle(
-                                  fontSize: 28,
+                                  fontSize: 20,fontWeight: FontWeight.w900,
                                   color: darkgreen),),
                             SizedBox(width: 40,),
                             InkWell(onTap: (){
-                              callNext(context, TakingStatus());
+                              callNext(context, TakingStatus(orderid: orderid,));
                             },
                                 child: brbtn(height/26,width/4,"Confirm")),
                           ],
                         ),
-                        Text('2',style: TextStyle(fontSize: 22),)
+                        Text(quantity,style: TextStyle(fontSize: 20),)
                       ],
                     ),
                   ),

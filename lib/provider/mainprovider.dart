@@ -1,4 +1,5 @@
 import 'dart:collection';
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +11,10 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plantium/constant/mycolos.dart';
 import 'package:plantium/modelclass/mymodels.dart';
+import 'package:plantium/provider/loginprovider.dart';
+import 'package:provider/provider.dart';
+
+import '../constant/myfunction.dart';
 
 class MainProvider extends ChangeNotifier {
   Reference indoorimagestorage = FirebaseStorage.instance.ref("Indoor Images");
@@ -25,6 +30,8 @@ class MainProvider extends ChangeNotifier {
   TextEditingController indoornameController = TextEditingController();
   TextEditingController indoordescriptionController = TextEditingController();
   TextEditingController indoorpriceController = TextEditingController();
+
+
 
 
   Future<void> addIndoor(String Infrom, String InId) async {
@@ -190,8 +197,7 @@ class MainProvider extends ChangeNotifier {
   }
 
 
-  Reference outdoorimagestorage = FirebaseStorage.instance.ref(
-      "Outdoor Images");
+  Reference outdoorimagestorage = FirebaseStorage.instance.ref("Outdoor Images");
 
 
   File? OutdoorImages;
@@ -205,7 +211,8 @@ class MainProvider extends ChangeNotifier {
   TextEditingController outdoorpriceController = TextEditingController();
 
 
-  Future<void> addOutdoor(String Outfrom, String OutId) async {
+  Future<void> addOutdoor(
+      String Outfrom, String OutId) async {
     String id = DateTime
         .now()
         .millisecondsSinceEpoch
@@ -547,7 +554,7 @@ class MainProvider extends ChangeNotifier {
   TextEditingController registernameController = TextEditingController();
   TextEditingController registerphoneController = TextEditingController();
 
-  Future<void> AddCustomer() async {
+  Future<void> AddCustomer(String userid,String from,) async {
     String id = DateTime
         .now()
         .millisecondsSinceEpoch
@@ -557,16 +564,31 @@ class MainProvider extends ChangeNotifier {
     Map["PHONE"] = registerphoneController.text.toString();
     Map["ADDED_BY"] = '';
     Map["TIME"] = DateTime.now();
-    Map["CUSTOMER_ID"] = id;
+
 
     HashMap<String, Object> User = HashMap();
     User["NAME"] = registernameController.text.toString();
     User["PHONE"] = registerphoneController.text.toString();
     User["TYPE"] = 'USER';
-    User["USER_ID"] = id;
 
-    db.collection("CUSTOMER").doc(id).set(Map);
-    db.collection("USER").doc(id).set(User);
+    if(from=="NEW"){
+      Map["CUSTOMER_ID"] = id;
+      User["USER_ID"] = id;
+
+    }
+    if(from=="NEW"){
+      db.collection("CUSTOMER").doc(id).set(Map);
+      db.collection("USER").doc(id).set(User);
+
+    }else{
+      db.collection("CUSTOMER").doc(userid).update(Map);
+      db.collection("USER").doc(userid).update(Map);
+
+    }
+
+
+
+    getUser(userid);
 
     notifyListeners();
   }
@@ -574,16 +596,25 @@ class MainProvider extends ChangeNotifier {
 
   List<UserModel> userlist = [];
 
+  String name="";
+  String id="";
+  String phone="";
 
-  void getUser() {
-    db.collection("USER").get().then((value1) {
+  void getUser(String userid) {
+    print("userid = $userid");
+    db.collection("CUSTOMER").where("CUSTOMER_ID",isEqualTo: userid).get().then((value1) {
       print(value1);
       if (value1.docs.isNotEmpty) {
         for (var value in value1.docs) {
           print(value.get("NAME"));
           print(value.get("PHONE"));
-          userlist.add(
-              UserModel(value.id, value.get("NAME"), value.get("PHONE")));
+         Map<String,dynamic> map=value.data();
+         id=value.id;
+         name=map["NAME"].toString();
+         phone=map["PHONE"].toString();
+
+         registernameController.text=name;
+         registerphoneController.text=phone;
           notifyListeners();
         }
         notifyListeners();
@@ -591,6 +622,7 @@ class MainProvider extends ChangeNotifier {
       notifyListeners();
     });
   }
+
 
   void getEditUser(usId) {
     db.collection("USER").doc(usId).get().then((value) {
@@ -626,7 +658,7 @@ class MainProvider extends ChangeNotifier {
             images = value.get("Other Images");
           }
           plantsList.add(PlantsModel(
-              value.id, images, value.get("NAME"), value.get("PRICE"),value.get("DESCRIPTION")));
+              value.id, images, value.get("NAME"), value.get("PRICE"),value.get("DESCRIPTION"),value.get("CATEGORY")));
           filterplantsList = plantsList;
           notifyListeners();
         }
@@ -646,7 +678,7 @@ class MainProvider extends ChangeNotifier {
   List<CartModel> cartList = [];
 
 
-  Future<void> addToCart(String catid, BuildContext context,String itemId,
+  Future<void> addToCart(BuildContext context, String itemId,
       String userId,String itemName,String itemPrice,String itemImage,) async {
     String CartItemid = DateTime
         .now()
@@ -677,8 +709,7 @@ class MainProvider extends ChangeNotifier {
               color: whitegreen, fontFamily: 'jml', fontSize: 20
           ))),
           backgroundColor: lightgreen,));
-
-        getItems(catid);
+        getItems();
         // getCartItems(userId);
         notifyListeners();
       } else {
@@ -692,23 +723,15 @@ class MainProvider extends ChangeNotifier {
       }
     });
   }
-  void getItems(String userId) {
+  void getItems( ) {
     print("sndjdjd");
-    db.collection("CARTITEMS")
-        .where("USER_ID", isEqualTo: userId)
-        .get().then((value) {
+    db.collection("CARTITEMS").get().then((value) {
       if (value.docs.isNotEmpty) {
         cartList.clear();
-        // cartTotal.clear();
         for (var value in value.docs) {
           cartList.add(
               CartModel(value.id, value.get("ITEM_NAME").toString(),
                   value.get("PRICE").toString(),value.get("IMAGE").toString(),));
-          notifyListeners();
-          // cartTotal.add(int.parse(value.get("PRICE")));
-
-          notifyListeners();
-          // cartList.add(value.get("ITEM_ID").toString());
           notifyListeners();
         }
       }
@@ -716,9 +739,9 @@ class MainProvider extends ChangeNotifier {
     });
   }
 
-  void deletecartItem(BuildContext context,String userId,cid) {
-    db.collection("CARTITEMS").doc(cid).delete();
-    // notifyListeners();
+  void deletecartItem(BuildContext context,String userId,) {
+    db.collection("CARTITEMS").doc(userId).delete();
+    notifyListeners();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       shape: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
       content: Center(child: Text(
@@ -727,8 +750,143 @@ class MainProvider extends ChangeNotifier {
       ),
       ),
       backgroundColor: lightgreen,));
-    getItems(userId);
+    getItems();
     notifyListeners();
+    notifyListeners();
+  }
+
+
+
+  List<UserAdminModel>adminuserList=[];
+
+  void getAdminUser() {
+    db.collection("CUSTOMER").get().then((value1) {
+      print(value1);
+      if (value1.docs.isNotEmpty) {
+        adminuserList.clear();
+        for (var value in value1.docs) {
+          adminuserList.add(UserAdminModel(
+              value.get("CUSTOMER_ID"),value.get("NAME"),value.get("PHONE")));
+
+          notifyListeners();
+        }
+        notifyListeners();
+      }
+      notifyListeners();
+    });
+  }
+
+
+  TextEditingController ordernameController = TextEditingController();
+  TextEditingController orderaddressController = TextEditingController();
+  TextEditingController orderstateController = TextEditingController();
+  TextEditingController orderquantityController = TextEditingController();
+
+
+
+  Future<void> AddOrder(String name,String image,BuildContext context) async {
+    LoginProvider logprovider=Provider.of(context,listen: false);
+
+    print("userid = ${logprovider.loginUserid}");
+    String id = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
+    HashMap<String, Object> Map = HashMap();
+    Map["NAME"] = ordernameController.text.toString();
+    Map["ADDRESS"] = orderaddressController.text.toString();
+    Map["ADDED_BY"] = '';
+    Map["TIME"] = DateTime.now();
+    Map["PLANT_NAME"] =  name;
+    Map["IMAGE"] =image;
+    Map["STATE"] = orderstateController.text.toString();
+    Map["QUANTITY"] = orderquantityController.text.toString();
+    Map["USER_ID"] = logprovider.loginUserid;
+    // User["TYPE"] = 'USER';
+    db.collection("ORDERS").doc(id).set(Map);
+    getOrder();
+    // getUserOrder(userid);
+
+    notifyListeners();
+  }
+
+  List<OrderModel>orderList=[];
+
+
+ void getOrder() {
+    db.collection("ORDERS").get().then((value1) {
+    print(value1);
+    if (value1.docs.isNotEmpty) {
+      orderList.clear();
+      for (var elements in value1.docs) {
+        Map<String, dynamic> OMap = elements.data();
+        for (var value in value1.docs) {
+          print(value.get("NAME").toString());
+          orderList.add(OrderModel(
+            OMap["ORDER_ID"].toString(),
+            OMap["NAME"],
+            OMap["STATE"],
+            OMap["QUANTITY"],
+            OMap["ADDRESS"],
+            OMap["IMAGE"],
+            OMap["PLANT_NAME"],
+            OMap["USER_ID"].toString(),
+            OMap["STATUS"].toString(),
+          ));
+          notifyListeners();
+        }
+        notifyListeners();
+      }
+    }
+    notifyListeners();
+  });
+
+ }
+
+  String ordervaluew='Order confirmed';
+  void orderplaced(String? val) {
+    ordervaluew = val!;
+  }
+
+  void updateorder(String orderid,BuildContext context){
+    String id = DateTime.now().millisecondsSinceEpoch.toString();
+    Map<String, dynamic> map = HashMap();
+    map["STATUS"]=ordervaluew;
+    // map["STATUS_TIME"]=DateTime.now();
+    db.collection("ORDERS").doc(orderid).update(map);
+    finish(context);
+    getOrder();
+  }
+
+
+
+  List<OrderModel> UserOrderList=[];
+
+  void getUserOrder(String userid) {
+    print("userid = $userid");
+    db.collection("ORDERS").where("USER_ID",isEqualTo: userid).get().then((value1) {
+      print(value1);
+      if (value1.docs.isNotEmpty) {
+        UserOrderList.clear();
+      }
+        for (var value in value1.docs) {
+          // print(value.get("NAME"));
+          // print(value.get("PHONE"));
+          Map<String,dynamic> map=value.data();
+          UserOrderList.add(OrderModel(value.id,
+            value.get("NAME").toString(),
+            value.get("STATE").toString(),
+            value.get("QUANTITY").toString(),
+            value.get("ADDRESS").toString(),
+            value.get("IMAGE").toString(),
+            value.get("PLANT_NAME").toString(),
+            value.get("USER_ID").toString(),
+            value.get("STATUS").toString(),
+          ));
+          notifyListeners();
+        }
+        notifyListeners();
+    });
   }
 
 
@@ -736,4 +894,18 @@ class MainProvider extends ChangeNotifier {
 
 
 
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+

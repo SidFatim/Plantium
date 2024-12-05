@@ -60,7 +60,7 @@ class AdminHomeScreen extends StatelessWidget {
             Center(child: Consumer<MainProvider>(
               builder: (context,value,child) {
                 return InkWell(onTap: (){
-                  value.getUser();
+                  value.getAdminUser();
                   callNext(context, UsersList());
                 },
                   child: Container(
@@ -89,32 +89,38 @@ class AdminHomeScreen extends StatelessWidget {
               }
             )),
             SizedBox(height: 40,),
-            Center(child: InkWell(onTap: (){
-              callNext(context, OrderList());
-            },
-              child: Container(height: 80,width: 320,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: lightgreen),
-                    color: darkgreen),
-                child: Center(
-                    child: Row(
-                  children: [
-                    SizedBox(width: 60,),
-                    Text('Orders',
-                      style: TextStyle(
-                        color: whitegreen,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),),
-                    SizedBox(width: 70,),
-                    Icon(
-                      Icons.chevron_right,
-                      color: whitegreen,
-                      size: 40,),
-                  ],
-                )),),
+            Consumer<MainProvider>(
+              builder: (context,value,child) {
+                return Center(child: InkWell(onTap: (){
+                  value.getOrder();
 
-            )),
+                  callNext(context, OrderList());
+                },
+                  child: Container(height: 80,width: 320,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: lightgreen),
+                        color: darkgreen),
+                    child: Center(
+                        child: Row(
+                      children: [
+                        SizedBox(width: 60,),
+                        Text('Orders',
+                          style: TextStyle(
+                            color: whitegreen,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),),
+                        SizedBox(width: 70,),
+                        Icon(
+                          Icons.chevron_right,
+                          color: whitegreen,
+                          size: 40,),
+                      ],
+                    )),),
+
+                ));
+              }
+            ),
             SizedBox(height: 40,),
             // Consumer<MainProvider>(
             //   builder: (context,value,child) {

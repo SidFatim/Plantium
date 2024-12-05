@@ -70,22 +70,26 @@ void verify(BuildContext context) async {
     }
   });}
   String loginUserid='';
+  String loginphno="";
+  String loginUsername='';
+
 
 Future<void> userAuthorized(String? phoneNumber, BuildContext context) async {
 
-  String loginUsername='';
+
   String loginUsertype='';
 
   String userId='';
-  String loginphno="";
+
   String loginPhoto="";
   String address="";
   MainProvider provider = Provider.of<MainProvider>(context, listen: false);
 
   try {
     var phone = phoneNumber!;
-    print(phoneNumber.toString()+"duudud");
+    print(phone.toString()+"duudud");
     db.collection("USER").where("PHONE",isEqualTo:phone).get().then((value) {
+      print('value = ${value.docs}');
       if(value.docs.isNotEmpty) {
         print("fiifuif");
         for (var element in value.docs) {
@@ -108,10 +112,12 @@ Future<void> userAuthorized(String? phoneNumber, BuildContext context) async {
             print("mxnxn");
 
             provider.getPlants();
-            callNextReplacement(context, Bottom(),);
+            provider.getItems();
+            provider.getUser(userId);
+            notifyListeners();
+            callNextReplacement(context, Bottom(userid: loginUserid),);
+            notifyListeners();
           }
-
-
           print("dkdkdd");
         }
       }
